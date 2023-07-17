@@ -86,7 +86,6 @@ const login = ref<FormInstance>();
 function doLogin(){
 
 	console.log("点击登录")
-	console.log(param)
 	const md5:any = new Md5()
 md5.appendAsciiStr(param.password)
 console.log(param.password)
