@@ -15,7 +15,7 @@
 						type="password"
 						placeholder="请输入密码"
 						v-model="param.password"
-						@keyup.enter="doLogin()"
+						@keyup.enter="doLogin(login)"
 					>
 						<template #prepend>
 							<el-button :icon="Lock"></el-button>
@@ -23,7 +23,7 @@
 					</el-input>
 				</el-form-item>
 				<div class="login-btn">
-					<el-button type="primary" @click="doLogin()">登录</el-button>
+					<el-button type="primary" @click="doLogin(login)">登录</el-button>
 				</div>
 				<p class="login-tips">Tips : 请牢记账户和密码</p>
 			</el-form>
@@ -66,31 +66,23 @@ const permiss = usePermissStore();
 const login = ref<FormInstance>();
 
 
-// const submitForm = (formEl: FormInstance | undefined) => {
-// 	if (!formEl) return;
-// 	formEl.validate((valid: boolean) => {
-// 		if (valid) {
-// 			ElMessage.success('登录成功');
-// 			localStorage.setItem('ms_username', param.username);
-// 			const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-// 			permiss.handleSet(keys);
-// 			localStorage.setItem('ms_keys', JSON.stringify(keys));
-// 			router.push('/');
-// 		} else {
-// 			ElMessage.error('登录成功');
-// 			return false;
-// 		}
-// 	});
-// };
+function doLogin(formEl: FormInstance | undefined){
+	if (!formEl)
+		return
+  formEl.validate((valid) => {
+    if (valid) {
+		const md5:any = new Md5()
+		md5.appendAsciiStr(param.password)
+		const mdPwd= md5.end()
+		param.password=mdPwd
+		// 提交账户密码，检测
 
-function doLogin(){
 
-	console.log("点击登录")
-	const md5:any = new Md5()
-md5.appendAsciiStr(param.password)
-console.log(param.password)
-const passw= md5.end()
-console.log('加密密码',passw)
+    } else {
+      return false
+    }
+  })
+
 }
 
 const tags = useTagsStore();
